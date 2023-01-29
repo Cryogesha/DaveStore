@@ -1,16 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using DaveStore.Models;
 
 namespace DaveStore.Models
 {
-    public class Order
+    public class Cart
     {
-        public int OrderId { get; set; }
+        public int CartId { get; set; }
         [Required]
         public string UserId { get; set; }
-        [Required]
-        public DateTime CreateDate { get; set; }
-        [Required]
         public List<Product> Products { get; set; }
     }
 }

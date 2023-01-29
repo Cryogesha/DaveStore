@@ -25,4 +25,10 @@
     <Folder Include="Areas\Admin\Views\Shared\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\assets\gtx1660ti.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

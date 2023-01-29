@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using DaveStore.Data;
+using DaveStore.Models.ViewModels;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 
 namespace DaveStore.Controllers
@@ -28,7 +30,7 @@ namespace DaveStore.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Products(string searchQuery)
+        public async Task<IActionResult> Products(SearchViewModel searchViewModel)
         {
             if (_context.Products == null)
             {
@@ -37,12 +39,17 @@ namespace DaveStore.Controllers
 
             var products = from p in _context.Products select p;
 
-            if (!string.IsNullOrEmpty(searchQuery))
+            if (!string.IsNullOrEmpty(searchViewModel.SearchQuery))
             {
-                products = products.Where(p => p.Name.Contains(searchQuery));
+                products = from p in products where p.Name.Contains(searchViewModel.SearchQuery) select p;
             }
 
-            return View("_SearchPartial", await products.ToListAsync());
+            if (searchViewModel.CategoryId != 0)
+            {
+                products = from p in products where p.CategoryId == searchViewModel.CategoryId select p;
+            }
+
+            return View("Products", await products.ToListAsync());
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
